@@ -12,12 +12,17 @@ This project is designed to be an infrastructure in a box.
 1. Create a new virtual environment
 
   ```sh
-    $ mkvirtualenv skosh-vm
+  $ mkvirtualenv skosh-vm
   ```
 1. Activate virtualenv
 
   ```sh
-    $ workon skosh-vm
+  $ workon skosh-vm
+  ```
+1. Add the dependencies
+
+  ```sh
+  $ pip install ansible
   ```
 1. Add the `SKOSHAPPS` environment variable to your shell
 
