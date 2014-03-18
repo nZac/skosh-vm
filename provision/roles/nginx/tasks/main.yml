@@ -1,0 +1,14 @@
+---
+
+- name: add the nginx ppa
+  apt_repository: repo='ppa:nginx/stable'
+
+- name: install nginx please
+  apt: pkg=nginx state=present
+
+- name: start nginx right meow!
+  service: name=nginx state=started enabled=yes
+
+- name: put the configuration in place
+  template: src="nginx.conf.j2" dest="/etc/nginx/nginx.conf"
+  notify: reload nginx

@@ -1,0 +1,43 @@
+# Go here: http://zaiste.net/2013/03/serving_apps_locally_with_nginx_and_pretty_domains/
+# for more details
+
+user  www-data;
+worker_processes  1;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  include       mime.types;
+  default_type  application/octet-stream;
+
+  sendfile        on;
+  keepalive_timeout  65;
+
+  server {
+    listen       80;
+    server_name  .dev;
+
+    set $basepath "{{ nginx_app_dir }}";
+
+    set $domain $host;
+    if ($domain ~ "^(.*)\.dev$") {
+      set $domain $1;
+    }
+    set $rootpath "${domain}";
+    if (-d $basepath/$domain/public) {
+      set $rootpath "${domain}/public";
+    }
+    if (-f $basepath/$domain/index.html) {
+      set $rootpath $domain;
+    }
+
+    root $basepath/$rootpath;
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+    root   html;
+    }
+  }
+}
