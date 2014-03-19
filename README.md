@@ -7,7 +7,7 @@ This project is designed to be an infrastructure in a box.
 1. Pull down the project.
 
   ```sh
-  $ git clone https://github.com/nZac/skosh-vm
+  $ git clone git@github.com:nZac/skosh-vm.git
   ```
 1. Create a new virtual environment
 
