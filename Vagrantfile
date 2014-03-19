@@ -5,7 +5,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "base"
+  config.vm.box = "nZac/base-ubuntu-lts"
 
   config.vm.network :private_network, ip: "192.168.30.10"
 
