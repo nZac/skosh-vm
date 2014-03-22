@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.network :private_network, ip: "192.168.30.10"
 
-  config.vm.synced_folder ENV.fetch("SKOSHAPPS", "") , "/opt/apps"
+  config.vm.synced_folder ENV.fetch("SKOSHAPPS", "") , "/opt/apps", type: "nfs"
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provision/site.yml"
