@@ -3,4 +3,5 @@
   user: vagrant
   sudo: yes
   roles:
-    - { role: nginx }
+    - { role: nginx, tags: nginx }
+    - { role: php, tags: php }

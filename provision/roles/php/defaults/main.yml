@@ -1,0 +1,39 @@
+---
+
+php_packages:
+  - php5-common
+  - php5-cli
+  - php5-fpm
+
+php_ppa: "ppa:ondrej/php5"
+
+php_config:
+  short_open_tag: Off
+  asp_tags: Off
+  disable_functions:
+    - phpinfo
+    - system
+    - exec
+    - shell_exec
+    - passthru
+    - popen
+    - proc_open
+    - parse_ini_file
+    - show_source
+    - symlink
+    - curl_exec
+    - curl_multi_exec
+  expose_php: Off
+  error_reporting: E_ALL
+  display_errors: Off
+  log_errors: On
+  ignore_repeated_errors: Off
+  report_memleaks: Off
+  open_basedir: /home/user/websites:/tmp/
+  upload_tmp_dir: /home/user/websites/.tmp
+  session_save_path: /home/user/websites/.tmp
+  error_log: /var/log/php-errors.log
+  post_max_size: 10M
+  default_charset:  UTF-8
+  upload_max_filesize: 2M
+  allow_url_fopen: Off

@@ -1,43 +1,59 @@
-# Go here: http://zaiste.net/2013/03/serving_apps_locally_with_nginx_and_pretty_domains/
-# for more details
-
 user  www-data;
 worker_processes  1;
 
 events {
-  worker_connections  1024;
+    worker_connections  1024;
 }
 
 http {
-  include       mime.types;
-  default_type  application/octet-stream;
+    include            mime.types;
+    default_type       application/octet-stream;
 
-  sendfile        off;
-  keepalive_timeout  65;
+    sendfile           off;
+    keepalive_timeout  65;
 
-  server {
-    listen       80;
-    server_name  .dev;
+    #########################################
+    # PRETTY DOMAINS FOR DEVELOPER MACHINES #
+    #########################################
+    server {
+        # Go here: http://zaiste.net/2013/03/serving_apps_locally_with_nginx_and_pretty_domains/
+        # for more details
 
-    set $basepath "{{ nginx_app_dir }}";
+        listen       80;
+        server_name  .dev;
+        index  index.html index.htm index.php;
 
-    set $domain $host;
-    if ($domain ~ "^(.*)\.dev$") {
-      set $domain $1;
+        set $BASEPATH "{{ nginx_app_dir }}";
+
+        set $DOMAIN $host;
+
+        if ($DOMAIN ~ "^(.*)\.dev$") {
+            set $DOMAIN $1;
+        }
+
+        set $ROOTPATH "${DOMAIN}";
+
+        if (-d $BASEPATH/$DOMAIN/public) {
+            set $ROOTPATH "${DOMAIN}/public";
+        }
+
+        if (-f $BASEPATH/$DOMAIN/index.html) {
+            set $ROOTPATH $DOMAIN;
+        }
+
+        root $BASEPATH/$ROOTPATH;
+
+        error_page   500 502 503 504  /50x.html;
+
+        location = /50x.html {
+            root   html;
+        }
+
+        location ~ \.php$ {
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass unix:///var/run/php5-fpm.sock;
+            fastcgi_index index.php;
+            include fastcgi_params;
+        }
     }
-    set $rootpath "${domain}";
-    if (-d $basepath/$domain/public) {
-      set $rootpath "${domain}/public";
-    }
-    if (-f $basepath/$domain/index.html) {
-      set $rootpath $domain;
-    }
-
-    root $basepath/$rootpath;
-
-    error_page   500 502 503 504  /50x.html;
-    location = /50x.html {
-    root   html;
-    }
-  }
 }

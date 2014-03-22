@@ -1,0 +1,35 @@
+; {{ ansible_managed }}
+
+short_open_tag = {{ php_config.short_open_tag }}
+
+asp_tags = {{ php_config.asp_tags }}
+
+disable_functions = {{ php_config.disable_functions|join(",") }}
+
+expose_php = {{ php_config.expose_php }}
+
+error_reporting = {{ php_config.error_reporting }}
+
+display_errors = {{ php_config.display_errors }}
+
+log_errors = {{ php_config.log_errors }}
+
+ignore_repeated_errors = {{ php_config.ignore_repeated_errors }}
+
+report_memleaks = {{ php_config.report_memleaks }}
+
+;open_basedir = {{ php_config.open_basedir }}
+
+upload_tmp_dir = {{ php_config.upload_tmp_dir }}
+
+session.save_path = {{ php_config.session_save_path }}
+
+error_log =  {{ php_config.error_log }}
+
+post_max_size = {{ php_config.post_max_size }}
+
+default_charset = {{ php_config.default_charset }}
+
+upload_max_filesize = {{ php_config.upload_max_filesize }}
+
+allow_url_fopen =  {{ php_config.allow_url_fopen }}
