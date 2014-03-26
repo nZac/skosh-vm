@@ -15,6 +15,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.playbook = "provision/site.yml"
     ansible.inventory_path = "provision/inventory"
     ansible.limit = "all"
+    if ENV.fetch("TAGS", "") != ""
+        ansible.tags = ENV["TAGS"]
+    end
+    ansible.extra_vars = {
+        "mysql_host_ips"=> ["192.168.30.1"]
+    }
   end
 
 end

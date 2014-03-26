@@ -2,6 +2,19 @@
 - hosts: webservers
   user: vagrant
   sudo: yes
+  vars_prompt:
+    - name: mysql_root_password
+      prompt: "Enter a mysql root password"
+      private: yes
+
+
+
   roles:
     - { role: nginx, tags: nginx }
-    - { role: php, tags: php }
+    - {
+        role: php,
+        tags: php,
+        mysql_root_password: mysql_root_password,
+        mysq_host_ips: 192.168.30.1
+      }
+    - { role: mysql, tags: mysql }

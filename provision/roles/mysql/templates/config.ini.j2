@@ -1,0 +1,85 @@
+[client]
+port        = 3306
+socket      = /var/run/mysqld/mysqld.sock
+
+[mysqld_safe]
+socket      = /var/run/mysqld/mysqld.sock
+nice        = 0
+log_warnings    = 1
+
+[mysqld]
+
+####################
+# GENERAL SETTINGS #
+####################
+
+user        = mysql
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+port        = 3306
+basedir     = /usr
+datadir     = /var/lib/mysql
+tmpdir      = /tmp
+language    = /usr/share/mysql/english
+skip-external-locking
+log_warnings  = 1
+bind-address  = {{ ansible_eth1.ipv4.address }}
+lower_case_table_name = 1
+character-set-server  = utf8
+collation-server      = utf8_general_ci
+
+
+##########################################
+# Memory Settings and Performance tuning #
+##########################################
+
+key_buffer_size         = 384M
+max_allowed_packet      = 50M
+thread_stack            = 192K
+thread_cache_size       = 16
+myisam-recover          = BACKUP
+query_cache_limit       = 16M
+query_cache_size        = 64M
+sort_buffer_size        = 2M
+read_buffer_size        = 2M
+read_rnd_buffer_size    = 8M
+myisam_sort_buffer_size = 64M
+table_open_cache        = 512
+optimizer_search_depth  = 0
+
+
+###########
+# Logging #
+###########
+
+#general_log_file        = /var/log/mysql/mysql.log
+#general_log             = 1
+
+# Error logging goes to syslog due to /etc/mysql/conf.d/mysqld_safe_syslog.cnf.
+
+log_slow_queries = /var/log/mysql/mysql-slow.log
+long_query_time  = 5
+#
+log-queries-not-using-indexes
+#
+# The following can be used as easy to replay backup logs or for replication.
+# note: if you are setting up a replication slave, see README.Debian about
+#       other settings you may need to change.
+#server-id          = 1
+#log_bin            = /var/log/mysql/mysql-bin.log
+expire_logs_days    = 10
+max_binlog_size     = 100M
+#binlog_do_db       = include_database_name
+#binlog_ignore_db   = include_database_name
+
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet  = 2GB
+
+[myisamchk]
+key_buffer_size   = 256M
+sort_buffer_size  = 256M
+read_buffer_size  = 2M
+write_buffer_size = 2M

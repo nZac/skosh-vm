@@ -1,0 +1,9 @@
+---
+mysql_host_ips: []
+mysql_packages:
+  - mysql-server
+  - python-mysqldb
+  - mysql-client
+mysql_root_username: root
+mysql_root_password: changeme
+

@@ -1,0 +1,38 @@
+---
+- name: add mysql firewall rules
+  template: src=firewall.ini.j2 dest=/etc/ufw/applications.d/mysql-server owner=root mode=0600
+
+- name: open mysql port
+  action: shell ufw allow {{ item }}
+  with_items: MySql
+
+- name: install mysql packages
+  apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items: mysql_packages
+
+- name: kick on mysql
+  service: name=mysql state=started
+
+- name: move the configuration file in place
+  template: src=config.ini.j2 dest=/etc/mysql/my.cnf owner=mysql mode=0600
+  notify: restart mysql
+
+- name: check that you changed the password
+  fail: msg="CHANGE THE MYSQL ROOT PASSWORD!"
+  when: mysql_root_password == 'changeme'
+
+- name: update mysql root password for all root accounts
+  mysql_user: name={{ mysql_root_username }} host={{ item }} password={{ mysql_root_password }} priv=*.*:ALL,GRANT
+  with_items:
+    - "{{ mysql_host_ips }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: copy .my.cnf file with root password credentials
+  template: src=my.cnf.j2 dest=/root/.my.cnf owner=mysql mode=0600
+  notify: restart mysql
+
+- name: delete the test database
+  mysql_db: name=test state=absent
+
